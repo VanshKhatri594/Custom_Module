@@ -10,6 +10,9 @@ class Patient(models.Model):
     patient_code = fields.Char(string='Patient Id', readonly=True)
     name = fields.Char(string='Name', required=True)
     age = fields.Char(string='Age', readonly=True)
+    age_category = fields.Selection([('senior citizen','Senior Citizen'),
+                                     ('adult','Adult'), ('child','Child'), ('minor','Minor')],
+                                    string='Age Category')
     blood_group = fields.Selection([
         ('A+', 'A+'), ('A-', 'A-'),
         ('B+', 'B+'), ('B-', 'B-'),
@@ -20,6 +23,10 @@ class Patient(models.Model):
     previous_illness = fields.Text(string='Previous Illness')
     phone = fields.Char(string='Phone')
     email = fields.Char(string='Email')
+    guardian_type = fields.Selection([('parent','Parent'),('relative','Relative'),
+                                      ('sibling','Sibling'),('friend','Friend'),('other','Other')],string='Guardian Type')
+    guardian_id = fields.Many2one('res.partner',String='Guardian')
+    appointment_ids = fields.One2many('hospital.appointments', 'patient_id', string="Appointments")
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -38,6 +45,7 @@ class Patient(models.Model):
             'res_model': 'hospital.appointments',
             'view_id': view_id,
             'target': 'current',
+            'context': {'default_patient_id': self.id}
         }
 
     @api.constrains('dob')
@@ -49,3 +57,25 @@ class Patient(models.Model):
                 today = date.today()
                 diff = relativedelta(today,record.dob)
                 self.age = f"{diff.years} years {diff.months} months"
+
+    @api.onchange('dob')
+    def on_change_dob(self):
+        if self.dob:
+            today = date.today()
+            diff = relativedelta(today,self.dob)
+            if diff.years >= 60:
+                self.age_category = 'senior citizen'
+            elif diff.years >= 18:
+                self.age_category = 'adult'
+            elif diff.years >= 10:
+                self.age_category = 'minor'
+            else :
+                self.age_category = 'child'
+
+    def _patients_count(self):
+        count = self.search_count([('age', '>', 40)])
+        print("Total number of patients above 40 years: ", count)
+
+
+
+

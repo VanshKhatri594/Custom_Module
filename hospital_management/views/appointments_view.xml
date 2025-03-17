@@ -8,6 +8,10 @@
             <field name="arch" type="xml">
                 <form string="Appointment Form">
                     <header>
+                        <button name="action_confirm" string="Confirm" type="object" invisible="state != 'draft'" class="btn-primary"/>
+                        <button name="action_in_consultation_" string="Start Consultation" type="object" class="btn-primary" invisible="state != 'confirm'"/>
+                        <button name="action_done" string="End Consultation" type="object" class="btn-primary" invisible="state != 'in_consultation'"/>
+                        <button name="action_cancel" string="Cancel" type="object" class="btn-primary" invisible="state == 'draft' or state != 'confirm'"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
                     </header>
                     <sheet>
@@ -17,10 +21,20 @@
                             </h1>
                         </div>
                         <group>
-                            <group>
+                            <group string="Appointment Details">
                                 <field name="patient_id" required="1"/>
                                 <field name="appointment_date"/>
                                 <field name="appointment_reason"/>
+                                <field name="start_consultation" readonly="1"/>
+                                <field name="end_consultation" readonly="1"/>
+                                <field name="total_consultation_time" readonly="1"/>
+                            </group>
+                            <group string="Product Details">
+                                <field name="product_id"/>
+                            </group>
+                            <group string="Guardian Details">
+                                <field name="guardian_type"/>
+                                <field name="guardian_id"/>
                             </group>
                         </group>
                     </sheet>
