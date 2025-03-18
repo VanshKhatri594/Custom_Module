@@ -11,7 +11,7 @@ class Appointments(models.Model):
 
     patient_id = fields.Many2one('hospital.patient', string='Patient')
     appointment_id = fields.Char(string='Appointment ID',readonly=True)
-    appointment_date = fields.Date(string='Appointment Date',default=fields.Date.today(),required=True)
+    appointment_date = fields.Datetime(string='Appointment Date',default=fields.Date.today(),required=True)
     appointment_reason = fields.Text(string='Appointment Reason')
 
     state = fields.Selection([('draft', 'Draft'),
@@ -69,17 +69,14 @@ class Appointments(models.Model):
         self.start_consultation = datetime.now()
 
     def action_done(self):
-        if self.appointment_date < fields.Date.today():
-            raise ValidationError("Appointment date cannot be in the past.")
-
-        self.end_consultation = fields.Datetime.now()
-
-        if self.start_consultation:
-            time_diff = self.end_consultation - self.start_consultation
-            total_time_mins = time_diff.total_seconds() / 60
-            self.total_consultation_time = round(total_time_mins, 2)
-
-        self.state = 'done'
+        if self.appointment_date < fields.datetime.now():
+            self.end_consultation = fields.datetime.now()
+            total_time = relativedelta(self.end_consultation, self.start_consultation)
+            total_time_mins = total_time.hours * 60 + total_time.minutes + total_time.seconds / 100
+            self.state = 'done'
+            self.total_consultation_time = total_time_mins
+        else:
+            raise ValidationError("Please wait for your consultation time")
 
     def action_cancel(self):
         self.state = 'cancel'
@@ -92,7 +89,43 @@ class Appointments(models.Model):
 
     def _Cancelled_Appointments(self):
         cancelled_appointments = {}
-        for record in self:
-            if record.state == 'cancel':
-                cancelled_appointments.update({record.appointment_id: [record.patient_id.name, record.appointment_date]})
+        today = fields.Date.today()
+        seven_days = today - relativedelta(days=7)
+        appointments = self.env['hospital.appointments'].search([('state','=','cancel'),
+                                                                 ('appointment_date','<=',today),
+                                                                 ('appointment_date','>=',seven_days)])
+
+        for appt in appointments:
+            cancelled_appointments[appt.appointment_id] = {'patient_id':appt.patient_id.name,'appointment_date':appt.appointment_date}
         print(cancelled_appointments)
+
+    def _Consultation_Report(self):
+        week_report = {}
+        today = fields.Date.today()
+        diff_seven_days = today - relativedelta(days=7)
+
+        appointments = self.env['hospital.appointments'].search([
+            ('start_consultation', '>=', diff_seven_days),
+            ('end_consultation', '<=', today)
+        ])
+
+        total_con = len(appointments)
+        total_time = 0.00
+        patient = []
+
+        for app in appointments:
+            total_time += app.total_consultation_time
+            if app.total_consultation_time > 60.00:
+                patient.append(app.patient_id.name)
+
+        week_report['totalappointment'] = total_con
+        week_report['total_time'] = total_time
+        week_report['patient_time_hour_plus'] = patient
+        print(week_report)
+
+
+
+
+
+
+

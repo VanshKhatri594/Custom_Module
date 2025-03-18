@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="prescription_form_view" model="ir.ui.view">
+        <field name="name">prescription.form</field>
+        <field name="model">prescription_details</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="date"/>
+                            <field name="state"/>
+                            <field name="prescription_lines"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="prescription_list_view" model="ir.ui.view">
+        <field name="name">prescription_list_view</field>
+        <field name="model">prescription_details</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="patient_id"/>
+                <field name="date"/>
+                <field name="state"/>
+                <field name="prescription_lines"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="prescription_action" model="ir.actions.act_window">
+        <field name="name">prescription.action</field>
+        <field name="res_model">prescription_details</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="prescription_menu" name="Prescription" parent="hms_root" action="prescription_action"/>
+</odoo>

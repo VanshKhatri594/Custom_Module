@@ -30,5 +30,26 @@
             <field name="interval_type">weeks</field>
             <field name="active">True</field>
         </record>
+
+        <record id="Week_Consultation_Report" model="ir.cron">
+            <field name="name">Weekly Consultation Report</field>
+            <field name="model_id" ref="model_hospital_appointments"/>
+            <field name="state">code</field>
+            <field name="code">model._Consultation_Report()</field>
+            <field name="interval_number">1</field>
+            <field name="nextcall">2025-03-23 00:00:01</field>
+            <field name="interval_type">weeks</field>
+            <field name="active">True</field>
+        </record>
+
+          <record id="Weekly_Appointments" model="ir.cron">
+            <field name="name">Weekly Appointments</field>
+            <field name="model_id" ref="model_hospital_patient"/>
+            <field name="state">code</field>
+            <field name="code">model._Weekly_Appointments</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">weeks</field>
+            <field name="active">True</field>
+        </record>
     </data>
 </odoo>

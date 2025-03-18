@@ -15,6 +15,8 @@
         'views/doctor_view.xml',
         'views/hospital_view.xml',
         'views/specialization_view.xml',
+        'views/prescription_view.xml',
+        'views/prescription_line_view.xml',
         'views/appointments_view.xml',
     ],
 }
