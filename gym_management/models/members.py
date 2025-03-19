@@ -1,7 +1,6 @@
 from odoo import fields, models, api
 from odoo.api import model_create_multi, constrains
 from dateutil.relativedelta import relativedelta
-
 from odoo.exceptions import ValidationError,UserError
 
 
@@ -16,6 +15,7 @@ class Members(models.Model):
     age = fields.Char(string='Age', compute='_compute_age',store=True)
     phone = fields.Char(string='Phone')
     email = fields.Char(string='Email')
+
     plan_id = fields.Many2one('gym.plans', string='Subscribed Plan')
     price = fields.Float(string="Plan Price", store =True)
     plan_type = fields.Selection([
@@ -28,10 +28,16 @@ class Members(models.Model):
         ('6_months', '6 Months'),
         ('12_months', '12 Months')
     ], string="Duration", required=True)
+
     registration_date = fields.Date(string='Registration Date', default=fields.Date.today(),readonly=True)
     dob = fields.Date(string='Date of Birth')
     membership_expiry = fields.Date(string = 'Expiry' ,compute='_compute_expiry',store=True)
 
+    trainer_id = fields.Many2one('gym.trainers', string='Trainer')
+    trainer_name = fields.Char(string="Trainer Name", store=True)
+    trainer_phone = fields.Char(string="Trainer Phone", store=True)
+    trainer_experience = fields.Integer(string="Experience (Years)", store=True)
+    trainer_specialization = fields.Char(string="Specialization", store=True)
 
     @model_create_multi
     def create(self,vals_list):
@@ -45,6 +51,12 @@ class Members(models.Model):
         self.price = self.plan_id.price
         self.plan_type = self.plan_id.plan_type
         self.duration = self.plan_id.duration
+
+    @api.onchange('trainer_id')
+    def on_change_trainer_id(self):
+        self.trainer_phone = self.trainer_id.phone
+        self.trainer_experience = self.trainer_id.experience
+        self.trainer_specialization = self.trainer_id.specialization
 
     @api.depends('check_in_ids')
     def _compute_check_in_count(self):
@@ -90,13 +102,13 @@ class Members(models.Model):
     @api.constrains('phone')
     def check_phone(self):
         for record in self:
-                if record.phone and len(record.phone) < 10:
-                    raise ValidationError("Phone number should be 10 digits")
+            if record.phone and len(record.phone) < 10:
+                raise ValidationError("Phone number should be 10 digits")
 
-                if record.phone:
-                    dup = self.env['gym.members'].search_count([('phone','=',record.phone)])
-                    if dup > 1:
-                        raise UserError("Phone number already exists")
+            if record.phone:
+                dup = self.env['gym.members'].search_count([('phone','=',record.phone)])
+                if dup > 1:
+                    raise UserError("Phone number already exists")
 
     @api.depends('registration_date','plan_id')
     def _compute_expiry(self):
@@ -111,18 +123,7 @@ class Members(models.Model):
                 elif record.duration == '12_months':
                     record.membership_expiry = record.registration_date + relativedelta(months=12)
 
-    # @api.onchange('registration_date','plan_id')
-    # def _compute_expiry(self):
-    #     for record in self:
-    #         if record.registration_date:
-    #             if record.duration == '1_month':
-    #                 record.membership_expiry = record.registration_date + relativedelta(months=1)
-    #             elif record.duration == '3_months':
-    #                 record.membership_expiry = record.registration_date + relativedelta(months=3)
-    #             elif record.duration == '6_months':
-    #                 record.membership_expiry = record.registration_date + relativedelta(months=6)
-    #             elif record.duration == '12_months':
-    #                 record.membership_expiry = record.registration_date + relativedelta(months=12)
+
 
 
 

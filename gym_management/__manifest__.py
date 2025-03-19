@@ -14,6 +14,7 @@
         'views/members_view.xml',
         'views/plans_view.xml',
         'views/log_in_view.xml',
+        'views/trainers_view.xml',
     ],
 
 

@@ -8,5 +8,12 @@
             <field name="prefix">M-</field>
             <field name="padding">4</field>
         </record>
+
+         <record id="Gym_Trainer_sequence" model="ir.sequence">
+            <field name="name">gym.trainers</field>
+            <field name="code">gym.trainers</field>
+            <field name="prefix">T-</field>
+            <field name="padding">4</field>
+        </record>
     </data>
 </odoo>
