@@ -33,10 +33,10 @@
     </record>
 
     <record id="prescription_line_action" model="ir.actions.act_window">
-        <field name="name">Prescription_Line</field>
+        <field name="name">Prescription_Line Details</field>
         <field name="res_model">prescription_line.details</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="Prescription_line_menu" name="Prescription_line" parent="hms_root" action="prescription_line_action"/>
+    <menuitem id="Prescription_line_menu" name="Prescription_Line" parent="hms_root" action="prescription_line_action"/>
 </odoo>

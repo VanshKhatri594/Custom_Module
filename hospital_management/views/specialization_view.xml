@@ -29,7 +29,7 @@
     </record>
 
     <record id="specialization_action" model="ir.actions.act_window">
-        <field name="name">Specialization</field>
+        <field name="name">Specialization Details</field>
         <field name="res_model">hospital.specialization</field>
         <field name="view_mode">list,form</field>
     </record>

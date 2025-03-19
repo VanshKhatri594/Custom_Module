@@ -6,6 +6,11 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe-title">
+                        <h1>
+                            <field name="student_id" readonly="1"/>
+                        </h1>
+                    </div>
                     <group>
                         <field name="name"/>
                         <field name="enroll_no"/>
@@ -25,6 +30,7 @@
         <field name="model">student.details</field>
         <field name="arch" type="xml">
             <list>
+<!--                <field name="student_id"/>-->
                 <field name="name"/>
                 <field name="enroll_no"/>
                 <field name="age"/>

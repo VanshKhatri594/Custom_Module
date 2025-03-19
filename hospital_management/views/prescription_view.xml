@@ -5,14 +5,20 @@
         <field name="model">prescription_details</field>
         <field name="arch" type="xml">
             <form>
+                  <header>
+                      <button name="action_confirm" string="Confirm" invisible="state != 'draft'" type="object" class="btn-primary"/>
+                      <button name="action_cancel" string="Cancel" invisible="state != 'draft'" type="object" class="btn-primary"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
+                    </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="patient_id"/>
                             <field name="date"/>
-                            <field name="state"/>
-                            <field name="prescription_lines"/>
                         </group>
+                    </group>
+                    <group>
+                            <field name="prescription_lines"/>
                     </group>
                 </sheet>
             </form>
@@ -26,14 +32,13 @@
             <list>
                 <field name="patient_id"/>
                 <field name="date"/>
-                <field name="state"/>
                 <field name="prescription_lines"/>
             </list>
         </field>
     </record>
 
     <record id="prescription_action" model="ir.actions.act_window">
-        <field name="name">prescription.action</field>
+        <field name="name">Prescription Details</field>
         <field name="res_model">prescription_details</field>
         <field name="view_mode">list,form</field>
     </record>

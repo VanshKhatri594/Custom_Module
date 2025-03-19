@@ -11,8 +11,10 @@ class PrescriptionLine(models.Model):
 
     product_id = fields.Many2one('product.product',string='Product',required=True)
     qty = fields.Integer(string='Quantity',default=1,required=True)
-    price_unit = fields.Float(string='Unit Price',readonly=True)
+    price_unit = fields.Float(string='Unit Price')
     total = fields.Float(string='Total',compute='_compute_total',store=True)
+
+    prescription_id = fields.Many2one('prescription_details','Prescription')
 
     @api.depends('qty', 'price_unit')
     def _compute_total(self):

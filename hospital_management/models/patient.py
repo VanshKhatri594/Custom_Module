@@ -97,6 +97,12 @@ class Patient(models.Model):
         appointment_model = self.env['hospital.appointments']
         patients = self.search([('weekly_vist','=',True)])
 
+        for patient in appointment_model:
+            appointment_model.create({
+                'patient_id': patient.id,
+                'appointment_date': fields.Date.today(),
+            })
+
     
 
 

@@ -8,8 +8,11 @@
     'application': True,
 
     'data': [
+        'data/ir_sequence.xml',
+        'data/ir_cron.xml',
         'security/ir.model.access.csv',
         'views/school_view.xml',
+        'views/fees_view.xml',
         'views/student_view.xml',
         'views/teacher_view.xml',
         'views/attendance_view.xml',

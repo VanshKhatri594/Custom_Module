@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <odoo>
-     <record id="teacher_list_view" model="ir.ui.view">
+    <record id="teacher_list_view" model="ir.ui.view">
         <field name="name">Teacher.details.list.view</field>
         <field name="model">teacher.details</field>
         <field name="arch" type="xml">
@@ -21,9 +21,13 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe-title">
+                        <h1>
+                            <field name="teacher_id"/>
+                        </h1>
+                    </div>
                     <group>
                         <field name="name"/>
-                        <field name="teacher_id"/>
                         <field name="contact"/>
                         <field name="salary"/>
                         <field name="school_name"/>
@@ -33,7 +37,7 @@
         </field>
     </record>
 
-       <!-- Action -->
+    <!-- Action -->
     <record id="teacher_action" model="ir.actions.act_window">
         <field name="name">Teacher Details</field>
         <field name="type">ir.actions.act_window</field>

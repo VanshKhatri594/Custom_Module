@@ -37,7 +37,7 @@
     </record>
 
     <record id="doctor_action" model="ir.actions.act_window">
-        <field name="name">Doctors</field>
+        <field name="name">Doctor Details</field>
         <field name="res_model">res.doctor</field>
         <field name="view_mode">list,form</field>
     </record>
