@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="student_form_view" model="ir.ui.view">
+        <field name="name">student.form</field>
+        <field name="model">res.student</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_block" string="Block" type="object" class="btn-primary" invisible="state != 'unblock'"/>
+                    <button name="action_unblock" string="Unblock" type="object" class="btn-primary" invisible="state != 'block'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="block,unblock"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="registration_id"/>
+                            <field name="registration_date"/>
+                            <field name="name"/>
+                            <field name="birth_date"/>
+                            <field name="age"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="standard"/>
+                            <field name="tution_fees" domain="[('standard','=',standard)]"/>
+                            <field name="fees"/>
+                            <field name="guardian_name" required="is_child == True" invisible="is_child != True"/>
+                            <field name="guardian_phone" required="is_child == True" invisible="is_child != True"/>
+                            <field name="is_blocked" readonly="1"/>
+                            <field name="is_expired" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string='Marks'>
+                            <field name="mark_ids">
+                                <list>
+                                    <field name="subject_id"/>
+                                    <field name="obtained_marks_exam"/>
+                                    <field name="obtained_marks_viva" />
+                                    <field name="total_obtained_marks"/>
+                                </list>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="subject_id"/>
+                                            <field name="obtained_marks_exam"/>
+                                            <field name="obtained_marks_viva" />
+                                            <field name="total_obtained_marks"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="student_tree_view" model="ir.ui.view">
+        <field name="name">student.list</field>
+        <field name="model">res.student</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="registration_id"/>
+                <field name="registration_date"/>
+                <field name="name"/>
+                <field name="birth_date"/>
+                <field name="age"/>
+                <field name="phone"/>
+                <field name="is_expired"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="student_action" model="ir.actions.act_window">
+        <field name="name">Student Details</field>
+        <field name="res_model">res.student</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="Student_management_root" name="SMS"/>
+    <menuitem id="student_menu" name="Students" parent="Student_management_root" action="student_action"/>
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_student,access_res_student,model_res_student,,1,1,1,1
+access_subject_subject,access_subject_subject,model_subject_subject,,1,1,1,1
+access_tuition_fees_structure,access_tuition_fees_structure,model_tuition_fees_structure,,1,1,1,1
+access_previous_year_mark,access_previous_year_mark,model_previous_year_mark,,1,1,1,1

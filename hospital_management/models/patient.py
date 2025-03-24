@@ -7,7 +7,7 @@ class Patient(models.Model):
     _name = 'hospital.patient'
     _description = 'Patient Record'
 
-    patient_code = fields.Char(string='Patient Id', readonly=True)
+    patient_code = fields.Char(string='Patient Id', readonly=True ,default='New')
     name = fields.Char(string='Name', required=True)
     age = fields.Char(string='Age', readonly=True)
     age_category = fields.Selection([('senior citizen','Senior Citizen'),

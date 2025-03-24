@@ -123,6 +123,14 @@ class Members(models.Model):
                 elif record.duration == '12_months':
                     record.membership_expiry = record.registration_date + relativedelta(months=12)
 
+    def write(self):
+        for record in self:
+            name = self.env['gym.members'].browse(1)
+
+
+
+
+
 
 
 

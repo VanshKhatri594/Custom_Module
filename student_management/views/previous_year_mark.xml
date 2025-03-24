@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="marks_form_view" model="ir.ui.view">
+        <field name="name">marks.form</field>
+        <field name="model">previous.year.mark</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="subject_id"/>
+                            <field name="obtained_marks_exam"/>
+                            <field name="obtained_marks_viva"/>
+                            <field name="total_obtained_marks"/>
+                            <field name="standard"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="marks_tree_view" model="ir.ui.view">
+        <field name="name">marks.list</field>
+        <field name="model">previous.year.mark</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="subject_id"/>
+                <field name="obtained_marks_exam"/>
+                <field name="obtained_marks_viva"/>
+                <field name="total_obtained_marks"/>
+                <field name="standard"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="marks_action" model="ir.actions.act_window">
+        <field name="name">Marks Details</field>
+        <field name="res_model">previous.year.mark</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="marks_menu" name="Previous_Year_mark" parent="Student_management_root" action="marks_action"/>
+</odoo>

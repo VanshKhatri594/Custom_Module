@@ -6,6 +6,7 @@ from odoo import fields, models, api
 class Prescription(models.Model):
     _name = 'prescription_details'
     _description = 'prescription Information'
+    _rec_name = 'patient_id'
 
 
     patient_id = fields.Many2one('hospital.patient', string='Patient')

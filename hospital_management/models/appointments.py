@@ -43,7 +43,7 @@ class Appointments(models.Model):
     @api.constrains('appointment_date')
     def check_appointment_date(self):
         for record in self:
-            if record.appointment_date < fields.Date.today():
+            if record.appointment_date < fields.Datetime.today():
                 raise ValidationError('Appointment Date should be greater than or equal to today')
 
     @api.constrains('patient_id')
