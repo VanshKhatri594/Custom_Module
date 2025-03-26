@@ -21,7 +21,7 @@
                             <field name="phone"/>
                             <field name="email"/>
                             <field name="standard"/>
-                            <field name="tution_fees" domain="[('standard','=',standard)]"/>
+                            <field name="fees_id" domain="[('standard','=',standard)]"/>
                             <field name="fees"/>
                             <field name="guardian_name" required="is_child == True" invisible="is_child != True"/>
                             <field name="guardian_phone" required="is_child == True" invisible="is_child != True"/>

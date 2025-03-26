@@ -7,7 +7,7 @@ class Previous_Year_Mark(models.Model):
 
 
     subject_id = fields.Many2one('subject.subject','Subject',required=True)
-    course_id = fields.Many2one('res.student','Subject',required=True)
+    student_id = fields.Many2one('res.student','Subject',required=True)
     total_marks = fields.Float(string='Total Marks',required=True)
     obtained_marks_exam = fields.Float(string='Exam Marks',required=True)
     obtained_marks_viva = fields.Float(string='Viva Marks',required=True)

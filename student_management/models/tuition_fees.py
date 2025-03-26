@@ -8,7 +8,8 @@ class TuitionFees(models.Model):
     _description = 'Fees Information'
     _rec_name = 'product'
 
-    product = fields.Many2one('product.template','Product',domain=[('type' , '=' , 'service')],required=True)
+    # product.template -> Products
+    product = fields.Many2one('product.template','Product',required=True)
     fees_amount = fields.Float(string='Fees Amount')
 
     quantity = fields.Float(string='Quantity')

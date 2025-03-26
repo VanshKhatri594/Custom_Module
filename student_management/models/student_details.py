@@ -33,17 +33,18 @@ class Student(models.Model):
     ])
     guardian_name = fields.Char(string='Guardian Name')
     guardian_phone = fields.Char(string='Guardian Phone')
-    tution_fees = fields.Many2one('tuition.fees.structure','Tuition Fees')
+    fees_id = fields.Many2one('tuition.fees.structure','Tuition Fees')
     fees = fields.Float(string='Fees')
     is_blocked = fields.Boolean(string='Is Blocked')
     is_expired = fields.Boolean(string='Is Expired')
-    mark_ids = fields.One2many('previous.year.mark','course_id','Marks')
+    mark_ids = fields.One2many('previous.year.mark','student_id','Marks')
     state = fields.Selection([
-                              ('block', 'Blocked'),
-                              ('unblock', 'Unblocked'),
-                              ],
-                             string="Status", default='unblock')
+        ('block', 'Blocked'),
+        ('unblock', 'Unblocked'),
+    ],
+        string="Status", default='unblock')
 
+    @api.model_create_multi
     def create(self,vals_list):
         res = super(Student,self).create(vals_list)
         for rec in res:
@@ -71,7 +72,7 @@ class Student(models.Model):
                 raise ValidationError("Phone number should be 10 digits")
 
             if record.phone:
-                dup = self.env['gym.members'].search_count([('phone', '=', record.phone)])
+                dup = self.env['res.student'].search_count([('phone', '=', record.phone)])
                 if dup > 1:
                     raise UserError("Phone number already exists")
 
@@ -90,7 +91,6 @@ class Student(models.Model):
         diff = today - relativedelta(days=30)
         expiry = self.env['res.student'].search([('is_blocked','=',False),('registration_date','<',diff)])
         expiry.write({'is_expired':True})
-        print("student expired")
 
     def write(self,vals):
         for record in self:
@@ -98,13 +98,7 @@ class Student(models.Model):
                 raise UserError('Blocked Student Cannot edit the details! Please Unblock First')
         res = super().write(vals)
         return res
-    #
-    # @api.onchange('standard','tution_fees')
-    # def on_change_fees(self):
-    #     if self.standard:
-    #         fees = self.env['tuition.fees.structure'].search([('standard','=',self.standard)])
-    #         print(fees.fees_amount)
-    #         self.fees = fees.fees_amount
-    #         self.tution_fees = fees
+
+
 
 

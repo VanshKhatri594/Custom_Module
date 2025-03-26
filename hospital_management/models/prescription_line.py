@@ -9,6 +9,7 @@ class PrescriptionLine(models.Model):
     _description = 'Prescription Line Information'
     _rec_name = 'product_id'
 
+    # product.product -> Product Variants
     product_id = fields.Many2one('product.product',string='Product',required=True)
     qty = fields.Integer(string='Quantity',default=1,required=True)
     price_unit = fields.Float(string='Unit Price')
