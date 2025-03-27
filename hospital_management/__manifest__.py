@@ -3,7 +3,7 @@
     'name': 'Hospital Management',
     'description': 'Hospital Management System',
     'author': 'Vansh Khatri',
-    'depends': ['base','product'],
+    'depends': ['base','product','sale'],
     'sequence': 1,
     'application': True,
 
