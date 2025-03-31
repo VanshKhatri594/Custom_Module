@@ -32,6 +32,7 @@
                                 <field name="email"/>
                             </group>
                             <group>
+                                <field name="partner_id" readonly="1"/>
                                 <field name="blood_group"/>
                                 <field name="dob"/>
                                 <field name="age_category" readonly="1"/>

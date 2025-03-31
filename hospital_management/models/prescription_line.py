@@ -21,3 +21,4 @@ class PrescriptionLine(models.Model):
     def _compute_total(self):
         for record in self:
             record.total = record.qty * record.price_unit
+

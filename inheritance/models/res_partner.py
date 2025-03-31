@@ -5,3 +5,6 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     extra_discount = fields.Float(string='Extra Discount',default=0.1)
+
+
+

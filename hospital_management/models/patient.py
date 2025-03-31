@@ -29,7 +29,7 @@ class Patient(models.Model):
     appointment_ids = fields.One2many('hospital.appointments', 'patient_id', string="Appointments")
     appointment_count = fields.Integer(compute="_compute_appointment_count", string="Appointment Count", store=True)
     weekly_vist = fields.Boolean(String="Weekly Visit")
-
+    partner_id = fields.Many2one('res.partner',string='Partner Reference')
 
     @api.depends('appointment_ids.patient_id')
     def _compute_appointment_count(self):
@@ -60,9 +60,15 @@ class Patient(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        for record in vals_list:
+            # record.patient_code = self.env['ir.sequence'].next_by_code('hospital.patient')
+            partner = self.env['res.partner'].create([{
+                'name': record.get('name'),
+                'phone': record.get('phone'),
+                'email': record.get('email')
+            }])
+            record.update({'partner_id':partner.id})
         res = super(Patient, self).create(vals_list)
-        for record in res:
-            record.patient_code = self.env['ir.sequence'].next_by_code('hospital.patient')
         return res
 
     @api.constrains('dob')
@@ -102,6 +108,21 @@ class Patient(models.Model):
                 'patient_id': patient.id,
                 'appointment_date': fields.Date.today(),
             })
+
+    def write(self,vals):
+        res = super(Patient,self).write(vals)
+        data = self.env['res.partner'].search([('id','=',self.partner_id.id)])
+        for rec in data:
+            if 'partner_id' in vals or 'phone' in vals or 'email' in vals:
+                rec.write({
+                    'phone':self.phone,
+                    'email':self.email
+                })
+            return res
+
+
+
+
 
     
 
