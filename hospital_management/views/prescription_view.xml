@@ -5,14 +5,21 @@
         <field name="model">prescription_details</field>
         <field name="arch" type="xml">
             <form>
-
-                  <header>
-                      <button name="action_confirm" string="Confirm" invisible="state != 'draft'" type="object" class="btn-primary"/>
-                      <button name="action_cancel" string="Cancel" invisible="state != 'draft'" type="object" class="btn-primary"/>
-                      <button name="action_create_invoice" string="Create Invoice" invisible="state != 'confirm'" type="object" class="btn-primary"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
-                    </header>
+                <header>
+                    <button name="action_confirm" string="Confirm" invisible="state != 'draft'" type="object" class="btn-primary"/>
+                    <button name="action_cancel" string="Cancel" invisible="state != 'draft'" type="object" class="btn-primary"/>
+                    <button name="action_create_delivery" string="Create Delivery" invisible="state != 'confirm'" type="object" class="btn-primary"/>
+                    <button name="action_create_invoice" string="Create Invoice" invisible="state != 'confirm'" type="object" class="btn-primary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
+                </header>
                 <sheet>
+                     <div class="oe_button_box" name="button_box">
+                            <button name="action_open_delivery"
+                                    type="object"
+                                    icon="fa-truck">
+                                <field name="delivery_count" widget="statinfo" string="Delivery"/>
+                            </button>
+                     </div>
                     <group>
                         <group>
                             <field name="patient_id"/>
@@ -20,7 +27,7 @@
                         </group>
                     </group>
                     <group>
-                            <field name="prescription_lines"/>
+                        <field name="prescription_lines"/>
                     </group>
                 </sheet>
             </form>

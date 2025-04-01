@@ -8,10 +8,17 @@
             <field name="padding">4</field>
         </record>
 
-         <record id="sequence_appointment_code" model="ir.sequence">
+        <record id="sequence_appointment_code" model="ir.sequence">
             <field name="name">hospital.appointments</field>
             <field name="code">hospital.appointments</field>
             <field name="prefix">AP-</field>
+            <field name="padding">4</field>
+        </record>
+
+        <record id="sequence_prescription_code" model="ir.sequence">
+            <field name="name">prescription.details</field>
+            <field name="code">prescription.details</field>
+            <field name="prefix">PS-</field>
             <field name="padding">4</field>
         </record>
     </data>
