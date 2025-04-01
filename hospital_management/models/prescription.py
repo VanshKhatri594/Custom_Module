@@ -17,13 +17,13 @@ class Prescription(models.Model):
     ],default='draft',string='Status')
     prescription_lines = fields.One2many('prescription_line.details','prescription_id',string='Prescriptions')
     invoice_ids = fields.Many2many('account.move',string='Invoices')
-    picking_ids = fields.One2many("stock.picking",'partner_id', string="Pickings")
+    picking_ids = fields.One2many("stock.picking",'prescription_id', string="Pickings")
     delivery_count = fields.Integer(compute='_compute_delivery_count',string='Delivery Count',store=True)
 
-    @api.depends('picking_ids.partner_id')
+    @api.depends('picking_ids')
     def _compute_delivery_count(self):
-        for rec in self:
-            rec.delivery_count = len(rec.picking_ids)
+        for delivery in self:
+            delivery.delivery_count = self.env['stock.picking'].search_count([('prescription_id', '=', delivery.id)])
 
     def action_open_delivery(self):
         form_view_id = self.env.ref('stock.view_picking_form').id
@@ -36,14 +36,14 @@ class Prescription(models.Model):
             'res_model': 'stock.picking',
             'target': 'current',
             'view_id': form_view_id,
-            'context': {'default_picking_ids': [self.id]}
+            # 'context': {'default_picking_ids': [self.id]}
         }
 
-        if self.delivery_count >= 1:
-            res['view_mode'] = 'list,form'
+        if self.delivery_count > 0:
             res['views'] = [(list_view_id, 'list'), (form_view_id, 'form')]
-            res['domain'] = [('partner_id', '=', self.patient_id.partner_id.id)]
-
+            res['domain'] = [('prescription_id', '=', self.id)]
+            res['view_mode'] = "form,list"
+            res['view_id'] = False
         return res
 
     @api.model_create_multi
