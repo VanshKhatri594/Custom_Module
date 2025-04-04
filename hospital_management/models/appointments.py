@@ -10,6 +10,7 @@ class Appointments(models.Model):
     _rec_name = 'patient_id'
 
     patient_id = fields.Many2one('hospital.patient', string='Patient')
+    doctor_id = fields.Many2one('res.doctor','Doctor Name')
     appointment_id = fields.Char(string='Appointment ID',readonly=True)
     appointment_date = fields.Datetime(string='Appointment Date',default=fields.Date.today(),required=True)
     appointment_reason = fields.Text(string='Appointment Reason')
@@ -32,6 +33,10 @@ class Appointments(models.Model):
     total_consultation_time = fields.Float(string='Total Consultation Time')
 
     product_id = fields.Many2one('product.product', string='Product', domain=[('type' , '=' , 'service')])
+
+    def action_send_email(self):
+        template_id = self.env.ref('hospital_management.email_template_appointment_confirmation')
+        template_id.send_mail(self.id, force_send=True)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -122,6 +127,45 @@ class Appointments(models.Model):
         week_report['total_time'] = total_time
         week_report['patient_time_hour_plus'] = patient
         print(week_report)
+
+    def pending_appointments_vals(self):
+        print("============================")
+        date = datetime.today()
+        next_date = date + relativedelta(days=1)
+        start_time = next_date.replace(hour=0, minute=0, second=0, microsecond=0)
+        end_time = next_date.replace(hour=23, minute=59, second=59, microsecond=999999)
+
+        pending_appointments = self.env['hospital.appointments'].search([
+            ('state', '=', 'confirm'),
+            ('appointment_date', '>=', start_time),
+            ('appointment_date', '<=', end_time)
+        ])
+
+        # pending_appointments_list = []
+        #
+        # for app in pending_appointments:
+        #     pending_appointments_list.append({
+        #         'Id': app.appointment_id,
+        #         'Name': app.patient_id.name,
+        #         'Reason': app.appointment_reason,
+        #         'Date': app.appointment_date.strftime('%d-%m-%Y')
+        #     })
+        #
+        # print(pending_appointments_list)
+        return pending_appointments
+
+    def pending_appointments(self):
+        vals = self.pending_appointments_vals()
+        template_id = self.env.ref('hospital_management.email_template_appointment_confirmation')
+        template_id.send_mail(self.id, force_send=True)
+
+
+
+
+
+
+
+
 
 
 

@@ -21,7 +21,7 @@
             <field name="active">True</field>
         </record>
 
-          <record id="Cancelled_Appointment" model="ir.cron">
+        <record id="Cancelled_Appointment" model="ir.cron">
             <field name="name">Weekly Cancellation Report</field>
             <field name="model_id" ref="model_hospital_appointments"/>
             <field name="state">code</field>
@@ -42,11 +42,21 @@
             <field name="active">True</field>
         </record>
 
-          <record id="Weekly_Appointments" model="ir.cron">
+        <record id="Weekly_Appointments" model="ir.cron">
             <field name="name">Weekly Appointments</field>
             <field name="model_id" ref="model_hospital_patient"/>
             <field name="state">code</field>
-            <field name="code">model._Weekly_Appointments</field>
+            <field name="code">model._Weekly_Appointments()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">weeks</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="Pending_Appointments" model="ir.cron">
+            <field name="name">Pending Appointments</field>
+            <field name="model_id" ref="model_hospital_appointments"/>
+            <field name="state">code</field>
+            <field name="code">model.pending_appointments()</field>
             <field name="interval_number">1</field>
             <field name="interval_type">weeks</field>
             <field name="active">True</field>

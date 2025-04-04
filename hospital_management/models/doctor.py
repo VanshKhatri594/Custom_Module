@@ -9,6 +9,7 @@ class Doctor(models.Model):
 
     name = fields.Char(string='Doctor Name',required=True)
     specialization = fields.Many2one('hospital.specialization', string='Specialization')
+    email = fields.Char(string='Email')
     license_no = fields.Char(string='License Number')
     experience_years = fields.Integer(string='Experience in Years')
     hospital_id = fields.Many2one('hospital.hospital', string='Associated Hospital/Clinic')

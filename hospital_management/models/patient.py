@@ -61,7 +61,7 @@ class Patient(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for record in vals_list:
-            # record.patient_code = self.env['ir.sequence'].next_by_code('hospital.patient')
+            record.update({'patient_code' : self.env['ir.sequence'].next_by_code('hospital.patient')})
             partner = self.env['res.partner'].create([{
                 'name': record.get('name'),
                 'phone': record.get('phone'),

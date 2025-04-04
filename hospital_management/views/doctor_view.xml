@@ -9,6 +9,7 @@
                     <group>
                         <group>
                             <field name="name"/>
+                            <field name="email"/>
                             <field name="specialization"/>
                             <field name="license_no"/>
                             <field name="experience_years"/>

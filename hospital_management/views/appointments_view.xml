@@ -12,6 +12,7 @@
                         <button name="action_in_consultation_" string="Start Consultation" type="object" class="btn-primary" invisible="state != 'confirm'"/>
                         <button name="action_done" string="End Consultation" type="object" class="btn-primary" invisible="state != 'in_consultation'"/>
                         <button name="action_cancel" string="Cancel" type="object" class="btn-primary" invisible="state == 'draft' or state != 'confirm'"/>
+                        <button name="action_send_email" string="Send Email" type="object" class="btn-primary" invisible="state != 'confirm'"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
                     </header>
                     <sheet>
@@ -23,6 +24,7 @@
                         <group>
                             <group string="Appointment Details">
                                 <field name="patient_id" required="1"/>
+                                <field name="doctor_id" required="1"/>
                                 <field name="appointment_date"/>
                                 <field name="appointment_reason"/>
                                 <field name="start_consultation" readonly="1"/>

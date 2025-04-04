@@ -1,5 +1,5 @@
 from odoo import fields, models, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError,UserError
 
 
 class Prescription(models.Model):
@@ -100,12 +100,10 @@ class Prescription(models.Model):
         stock.picking
         stock.move
         '''
-
         picking_vals = self.prepare_picking_vals()
         picking_id = self.env['stock.picking'].create(picking_vals)
         move_vals = self.prepare_move_vals(picking_id)
         move_ids = self.env['stock.move'].create(move_vals)
-        # print("picking_id==========", picking_id)
 
     def prepare_picking_vals(self):
         picking_type_id = self.env['stock.picking.type'].search([('code','=','outgoing')],limit=1)
@@ -115,20 +113,28 @@ class Prescription(models.Model):
             'location_id':picking_type_id.default_location_src_id.id,
             'location_dest_id':picking_type_id.default_location_dest_id.id,
             'origin':self.prescription_code,
+            'prescription_id':self.id,
         }
         return vals
 
-    def prepare_move_vals(self,picking_id):
-        move_vals =[]
+    def prepare_move_vals(self, picking_id):
+        move_vals = []
         for line in self.prescription_lines:
+            # if line.move_ids:
+            #     continue
+            qty_in_move = sum(line.move_ids.mapped('product_uom_qty'))
+            to_deliver = line.qty - qty_in_move
+            if to_deliver == 0:
+                continue
             vals = {
-                'picking_type_id':picking_id.picking_type_id.id,
-                'location_id':picking_id.location_id.id,
-                'location_dest_id':picking_id.location_dest_id.id,
-                'picking_id':picking_id.id,
-                'product_id':line.product_id.id,
-                'name':line.product_id.display_name,
-                'product_uom_qty':line.qty,
+                'picking_type_id': picking_id.picking_type_id.id,
+                'location_id': picking_id.location_id.id,
+                'location_dest_id': picking_id.location_dest_id.id,
+                'picking_id': picking_id.id,
+                'product_id': line.product_id.id,
+                'name': line.product_id.display_name,
+                'product_uom_qty': to_deliver,
+                'prescription_line_id': line.id,
             }
             move_vals.append(vals)
         return move_vals
