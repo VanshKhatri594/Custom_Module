@@ -8,6 +8,11 @@
             <xpath expr="//list/field[@name='price_unit']" position="after">
                 <field name="previous_price"/>
             </xpath>
+              <xpath expr="//list/field[@name='product_uom_qty']" position="after">
+                <field name="quantity_available_at_wh"/>
+                <field name="quantity_available_at_locations" readonly="1"/>
+                <field name="location_ids" widget="many2many_tags" options="{'no_create': True}"/>
+            </xpath>
         </field>
     </record>
 </odoo>

@@ -129,7 +129,7 @@ class Appointments(models.Model):
         print(week_report)
 
     def pending_appointments_vals(self):
-        print("============================")
+        # print("============================")
         date = datetime.today()
         next_date = date + relativedelta(days=1)
         start_time = next_date.replace(hour=0, minute=0, second=0, microsecond=0)
