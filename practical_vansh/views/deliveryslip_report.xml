@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="stock_inherit"  inherit_id="stock.report_delivery_document">
+            <xpath expr="//div[@name='div_sched_date']" position="after">
+                <div class="row mb-4">
+                    <strong>
+                        Responsible:
+                        <t t-esc="user_id.name"/>
+                    </strong>
+                    <br/>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>

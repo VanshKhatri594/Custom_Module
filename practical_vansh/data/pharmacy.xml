@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <data>
+        <record id="pharmacy_pharmalabs" model="sale.pharmacy">
+            <field name="name">Pharmalabs</field>
+
+        </record> <record id="pharmacy_wells" model="sale.pharmacy">
+            <field name="name">Wells</field>
+
+        </record> <record id="pharmacy_n/a" model="sale.pharmacy">
+            <field name="name">N/A</field>
+        </record>
+    </data>
+</odoo>
