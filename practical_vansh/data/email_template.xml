@@ -1,0 +1,42 @@
+<odoo>
+    <record id="email_template_purchase" model="mail.template">
+        <field name="name">Purchase Email</field>
+        <field name="model_id" ref="model_purchase_order"/>
+        <field name="email_from">{{object.env.user.email}}</field>
+        <field name="email_to">{{object.partner_id.email}}</field>
+        <field name="subject">New Purchase Order {{object.name}}</field>
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+                <p>Hello
+                    <strong>
+                        <t t-out="object.partner_id.name"/>
+                    </strong>
+                    <br/>
+                    <strong>
+                        Please Check the new purchase order
+                        <!--                        <t t-out="object.name"/>-->
+                    </strong>
+                    <br/>
+                    <strong>
+                        The Amount total is
+                        <!--                        <t t-out="object.price_subtotal"/>-->
+                    </strong>
+                    <br/>
+                    <strong>
+                        Please fulfill this order as soon as possible.
+                    </strong>
+
+                    ,
+                </p>
+
+                <p>Best Regards,</p>
+                <p>
+                    <strong>
+                        <t t-out="object.env.user.company_id.name"/>
+                    </strong>
+                </p>
+            </div>
+        </field>
+        <field name="report_template_ids" eval="[(4,ref('purchase.action_report_purchase_order'))]"/>
+    </record>
+</odoo>
